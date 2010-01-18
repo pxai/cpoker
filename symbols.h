@@ -3,6 +3,6 @@
 */
 #define HEART "♥"
 #define DIAMOND "♦"
-#define TREBOL "♣"
-#define ACE "♠"
+#define CLUB "♣"
+#define SPADE "♠"
 
