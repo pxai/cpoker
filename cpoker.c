@@ -11,9 +11,9 @@ int main ()
 {
 	printf("Welcome to cpoker\n");
 	printf("Let's see: %s\n",POKERDECK[0]);
-	showall(POKERDECK);
-	shuffle(&POKERDECK);
-	showall(POKERDECK);
+	showall(POKERDECK,NDECK);
+	shuffle(&NDECK);
+	showall(POKERDECK,NDECK);
 	return 1;
 }
 
