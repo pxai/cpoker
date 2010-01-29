@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include "deck.h"
 
-void shuffle (char ** deck);
+void shuffle (int * deck);
 
-void showall (char ** deck);
+void showall (char ** deck, int * ndeck);
 
 #endif
