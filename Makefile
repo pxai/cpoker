@@ -4,19 +4,25 @@
 
 CC = gcc
 CFLAGS = -O
-OBJS = utils.o deck.o
+OBJS = dealer.o deck.o players.o hand.o
 
 all=cpoker
 
 cpoker: $(OBJS)
 	$(CC) $(CFLAGS)	-o cpoker $(OBJS) cpoker.c
 
-utils.o: utils.c
-	$(CC) -c utils.c
+dealer.o: dealer.c
+	$(CC) -c dealer.c
 
 
 deck.o: deck.c
 	$(CC) -c deck.c
+
+players.o: players.c
+	$(CC) -c players.c
+
+hand.o: hand.c
+	$(CC) -c hand.c
 
 clean:
 	-$(RM) cpoker *.o
