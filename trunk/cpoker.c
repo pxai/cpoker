@@ -60,7 +60,7 @@ int main (int argc, char * argv[])
 	   
 	showhands(cpokerplayers);
 
-	printf("Thnx for playing cpoker!!\n");
+	printf("Thnx for playing cpoker!!\n built $Id$ \n");
 	return 1;
 }
 
