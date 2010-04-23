@@ -10,6 +10,7 @@
 #include "dealer.h"
 #include "deck.h"
 #include "players.h"
+#include "game.h"
 
 int main (int argc, char * argv[])
 {
@@ -58,6 +59,7 @@ int main (int argc, char * argv[])
 	cpokerplayers = playerinit();
 	deal(POKERDECK,NDECK,cpokerplayers);
 	   
+	start(POKERDECK,NDECK,cpokerplayers);
 	showhands(cpokerplayers);
 
 	printf("Thnx for playing cpoker!!\n built $Id$ \n");
