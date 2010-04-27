@@ -9,6 +9,7 @@
 #define PLAYERS 4
 #define TOTAL 3000
 #define HANDSIZE 2
+#define TOTALHAND 5
 
 
 #endif

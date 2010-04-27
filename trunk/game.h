@@ -8,16 +8,19 @@
 #include <stdlib.h>
 #include "deck.h"
 #include "players.h"
+#include "dealer.h"
 
 card * gamedeck;
 int * gamendeck;
 player * gameplayers;
+int pot;
+int endgame;
 
-void start (card * deck, int * ndeck, struct  player * players);
+void start ();
 void pre_flop ();
 void flop ();
 void turn ();
 void river ();
-void showdown (card * deck, int * ndeck);
+void showdown ();
 
 #endif
