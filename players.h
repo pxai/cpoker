@@ -14,7 +14,10 @@
 typedef struct player {
 	// Player name
 	char * name;
-
+	
+	// Human or not
+	unsigned short human;
+	
 	// Player type: future use.
 	int type;
 
@@ -23,6 +26,9 @@ typedef struct player {
 
 	// card hand
 	hand playerhand;
+	
+	// hand posibilities
+	posibilities playerposibilities[12];
 } player;
 
 struct player players[PLAYERS];

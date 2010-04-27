@@ -37,6 +37,17 @@ void deal (card * deck, int * ndeck,struct  player * players)
 
 }
 
+void showplayers (struct player * players)
+{
+	int i = 0;
+	printf("Showing players: \n");
+	
+	printf("Player %d Hand (you): %s %s\n",i,players[i].playerhand[0].show,players[i].playerhand[1].show);
+	
+	for (i=1;i<PLAYERS;i++)
+		printf("Player %d Hand: X X\n",i);
+}
+
 
 void showhands (struct player * players)
 {

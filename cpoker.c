@@ -49,19 +49,9 @@ int main (int argc, char * argv[])
 
 	printf("Arguments: %d %d %d\n",players,money,color);
 	   
-	deckinit();
-
-	printf("Let's see: %s\n",POKERDECK[20].show);
-
-	showall(POKERDECK,NDECK);
-	shuffle(&NDECK);
-	showall(POKERDECK,NDECK);
-	cpokerplayers = playerinit();
-	deal(POKERDECK,NDECK,cpokerplayers);
-	   
-	start(POKERDECK,NDECK,cpokerplayers);
-	showhands(cpokerplayers);
-
+	// And here we go...
+	start();
+	
 	printf("Thnx for playing cpoker!!\n built $Id$ \n");
 	return 1;
 }
