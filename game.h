@@ -1,8 +1,8 @@
 /**
 * $Id$
 */
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef GAME_H
+#define GAME_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,9 +13,14 @@
 card * gamedeck;
 int * gamendeck;
 player * gameplayers;
+int nplayers;
 int pot;
 int endgame;
+int bets[16];
+int max;
 
+void initbets();
+int checkbets();
 void start ();
 void pre_flop ();
 void flop ();
