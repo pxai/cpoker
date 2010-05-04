@@ -12,7 +12,7 @@
 
 
 
-int decide();
+char decide();
 
 
 #endif

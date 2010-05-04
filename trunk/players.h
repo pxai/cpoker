@@ -11,6 +11,12 @@
 #define RANDOM 2
 #define WINNER 3
 
+#define NONE 0
+#define CALL 1
+#define RAISE 2
+#define CHECK 3
+#define FOLD 4
+
 typedef struct player {
 	// Player name
 	char * name;
@@ -26,7 +32,13 @@ typedef struct player {
 
 	// card hand
 	hand playerhand;
-	
+
+	// fold
+	int choice;
+
+	// bets
+	int bet;
+		
 	// hand posibilities
 	posibilities playerposibilities[12];
 } player;
@@ -34,6 +46,8 @@ typedef struct player {
 struct player players[PLAYERS];
 
 struct player * playerinit (void);
+
+void playerinitchoice (struct player * pl);
 #endif
 
 	
