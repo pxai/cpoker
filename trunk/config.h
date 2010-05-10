@@ -6,7 +6,7 @@
 #define CONFIG_H
 
 #define DECKSIZE 52
-#define PLAYERS 4
+#define PLAYERS 6
 #define TOTAL 3000
 #define HANDSIZE 2
 #define TOTALHAND 5

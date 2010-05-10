@@ -8,9 +8,15 @@
 #define HAND_H
 
 typedef card hand[HANDSIZE];
-typedef card posibilities[TOTALHAND];
+
+typedef struct posibility {
+	card handpos[TOTALHAND];
+	char * handname;
+	int handvalue;	
+} posibility;
 
 void inithand(card * cards);
+
 #endif
 
 	

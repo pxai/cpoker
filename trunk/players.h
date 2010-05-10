@@ -40,7 +40,7 @@ typedef struct player {
 	int bet;
 		
 	// hand posibilities
-	posibilities playerposibilities[12];
+	struct posibility posibilities[22];
 } player;
 
 struct player players[PLAYERS];

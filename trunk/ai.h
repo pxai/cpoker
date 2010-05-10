@@ -12,7 +12,7 @@
 
 
 
-char decide();
+char decide(struct player p,card * tablec, int check_flag);
 
 
 #endif

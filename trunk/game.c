@@ -28,10 +28,9 @@ void start ()
 		inittablecards();	
 		pot = 0;
 
-
+		gameround++;
 		playerinitchoice(gameplayers);
 		pre_flop();
-
 	} while(!endgame);
 }
 
@@ -43,6 +42,7 @@ void pre_flop ()
 	int tmppot = 0;
 
 	unsigned short finish = 0;
+	printf("-------------[Round %d]-----------\n",gameround);
 	printf("PreFlop phase:\n");
 	char option[80];
 	char op;
@@ -57,7 +57,7 @@ void pre_flop ()
 			printf("Please, select a choice:\n");
 			printf("(c)Call:%d$\t",max);
 			printf("(r)Raise:%d$\t",(max*2));
-			printf("(k)Check.\t");
+			if (check_f) { printf("(k)Check.\t"); }
 			printf("(f)Fold.\t");
 			printf("(q)Chicken.\n");
 			scanf("%s",&option);
@@ -67,7 +67,7 @@ void pre_flop ()
 		}
 		else // machine choice
 		{
-			op = decide();
+			op = decide(gameplayers[current],tablecards,check_f);
 		}
 
 		switch (op)
@@ -76,6 +76,7 @@ void pre_flop ()
 					gameplayers[current].bet = max;
 					gameplayers[current].choice = CALL;
 					pot += max;
+					check_f = 0;
 					break;
 							
 			case 'r':
@@ -83,9 +84,11 @@ void pre_flop ()
 					gameplayers[current].choice = RAISE;
 					pot += (max * 2);
 					max *= 2;
+					check_f = 0;
 					break;		
 					
-			case 'k':	gameplayers[current].bet = -1;
+			case 'k':	if (!check_f) {break;}
+					gameplayers[current].bet = -1;
 					gameplayers[current].choice = CHECK;
 					break;		
 		
@@ -135,10 +138,11 @@ void flop ()
 
 			showtablecards(3);
 			showplayers(gameplayers, pturn);
+			calculatehand(gameplayers,tablecards,1);
 			printf("Please, select a choice:\n");
 			printf("(c)Call:%d$\t",max);
 			printf("(r)Raise:%d$\t",(max*2));
-			printf("(k)Check.\t");
+			if (check_f) { printf("(k)Check.\t"); }
 			printf("(f)Fold.\t");
 			printf("(q)Chicken.\n");
 			scanf("%s",&option);
@@ -148,7 +152,8 @@ void flop ()
 		}
 		else // machine choice
 		{
-			op = decide();
+			op = decide(gameplayers[current],tablecards,check_f);
+//			op = decide();
 		}
 
 		switch (op)
@@ -157,6 +162,7 @@ void flop ()
 					gameplayers[current].bet = max;
 					gameplayers[current].choice = CALL;
 					pot += max;
+					check_f = 0;
 					break;
 							
 			case 'r':
@@ -164,9 +170,11 @@ void flop ()
 					gameplayers[current].choice = RAISE;
 					pot += (max * 2);
 					max *= 2;
+					check_f = 0;
 					break;		
 					
-			case 'k':	gameplayers[current].bet = -1;
+			case 'k':	if (!check_f) {break;}
+					gameplayers[current].bet = -1;
 					gameplayers[current].choice = CHECK;
 					break;		
 		
@@ -216,7 +224,7 @@ void turn ()
 			printf("Please, select a choice:\n");
 			printf("(c)Call:%d$\t",max);
 			printf("(r)Raise:%d$\t",(max*2));
-			printf("(k)Check.\t");
+			if (check_f) { printf("(k)Check.\t"); }
 			printf("(f)Fold.\t");
 			printf("(q)Chicken.\n");
 			scanf("%s",&option);
@@ -226,7 +234,8 @@ void turn ()
 		}
 		else // machine choice
 		{
-			op = decide();
+			op = decide(gameplayers[current],tablecards,check_f);
+//			op = decide();
 		}
 
 		switch (op)
@@ -235,6 +244,7 @@ void turn ()
 					gameplayers[current].bet = max;
 					gameplayers[current].choice = CALL;
 					pot += max;
+					check_f = 0;
 					break;
 							
 			case 'r':
@@ -242,9 +252,11 @@ void turn ()
 					gameplayers[current].choice = RAISE;
 					pot += (max * 2);
 					max *= 2;
+					check_f = 0;
 					break;		
 					
-			case 'k':	gameplayers[current].bet = -1;
+			case 'k':	if (!check_f) {break;}
+					gameplayers[current].bet = -1;
 					gameplayers[current].choice = CHECK;
 					break;		
 		
@@ -293,7 +305,7 @@ void river ()
 			printf("Please, select a choice:\n");
 			printf("(c)Call:%d$\t",max);
 			printf("(r)Raise:%d$\t",(max*2));
-			printf("(k)Check.\t");
+			if (check_f) { printf("(k)Check.\t"); }
 			printf("(f)Fold.\t");
 			printf("(q)Chicken.\n");
 			scanf("%s",&option);
@@ -303,7 +315,8 @@ void river ()
 		}
 		else // machine choice
 		{
-			op = decide();
+			op = decide(gameplayers[current],tablecards,check_f);
+//			op = decide();
 		}
 
 		switch (op)
@@ -312,6 +325,7 @@ void river ()
 					gameplayers[current].bet = max;
 					gameplayers[current].choice = CALL;
 					pot += max;
+					check_f = 0;
 					break;
 							
 			case 'r':
@@ -319,9 +333,11 @@ void river ()
 					gameplayers[current].choice = RAISE;
 					pot += (max * 2);
 					max *= 2;
+					check_f = 0;
 					break;		
 					
-			case 'k':	gameplayers[current].bet = -1;
+			case 'k':	if (!check_f) {break;}
+					gameplayers[current].bet = -1;
 					gameplayers[current].choice = CHECK;
 					break;		
 		
@@ -363,7 +379,8 @@ void initbets()
 {
 	int i = 0;
 	max = 20;
-	
+	check_f = 1;
+
 	for (i=0;i<nplayers;i++)
 	{
 		gameplayers[i].bet = 0;		
