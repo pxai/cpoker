@@ -48,6 +48,7 @@ int main (int argc, char * argv[])
            }
 
 	printf("Arguments: %d %d %d\n",players,money,color);
+
 	   
 	// And here we go...
 	start();

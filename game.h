@@ -22,6 +22,7 @@ int pot;
 int endgame;
 int max;
 int gameround;
+int check_f;
 
 void initbets();
 void initturn();
