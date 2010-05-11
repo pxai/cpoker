@@ -6,11 +6,13 @@ CC = gcc
 CFLAGS = -O
 OBJS = dealer.o deck.o players.o hand.o game.o ai.o
 OBJTEST = deck.o dealer.o hand.o
+MSG=echo OK
 
 all=cpoker
 
 cpoker: $(OBJS)
-	$(CC) $(CFLAGS)	-o cpoker $(OBJS) cpoker.c
+	$(CC) $(CFLAGS)	-o cpoker $(OBJS) cpoker.c 
+	$(MSG)
 
 test: $(OBJTEST)
 	$(CC) -o test $(OBJTEST) test.c

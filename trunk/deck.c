@@ -17,6 +17,9 @@ int NDECK[DECKSIZE] = {0,1,2,3,4,5,6,7,8,9,10,11,12,
 		       26,27,28,29,30,31,32,33,34,35,36,37,38,
 	               39,40,41,42,43,44,45,46,47,48,49,50,51
 			};
+			
+int combturn[4][3]= {{0,1,2},{0,1,3},{0,2,3},{1,2,3}};
+int combriver[10][3] ={{0,1,2},{0,2,3},{0,1,3},{0,1,4},{0,2,4},{0,3,4},{1,2,3},{1,2,4},{1,3,4},{2,3,4}};
 
 void deckinit (void)
 {
@@ -37,25 +40,67 @@ void deckinit (void)
 }
 
 /*
-* This is... the mother of the little sheep xD
+* This is... the mother of the little lamb xD
 */
-void calculatehand (struct player * p, card * tc,int phase)
+struct handvalue  calculatehand (struct player * p, card * tc,int phase)
 {
- card tmphand[5];
+ int i,j, k;
+ i = j = k = 0;
  
+  card tmphand[5]; 
+ struct handvalue result,besthand;
+  
+ tmphand[0] = p->playerhand[0];
+ tmphand[1] = p->playerhand[1];
+ besthand.value = 0;		
+
  switch (phase)
  {
-	case 1 : tmphand[0] = p->playerhand[0];
-		 tmphand[1] = p->playerhand[1];
-		 tmphand[2] = tc[0];
-		 tmphand[3] = tc[1];
-		 tmphand[4] = tc[2];
-       sorthand(tmphand);
-		 resolve(tmphand);
-		 break;
+		 		
+ 	// FLOP 
+	case 1 : 
+		 		tmphand[2] = tc[0];
+		 		tmphand[3] = tc[1];
+		 		tmphand[4] = tc[2];
+       		sorthand(tmphand);
+		 		result = resolve(tmphand);
+		 		if (result.value > besthand.value) { besthand = result; }
+		 		break;
+		 		
+	// TURN
+	case 2 : 
+				for (i=0;i<4;i++)
+				{
+					for (j=0;j<3;j++)
+					{
+				 		tmphand[j+2] = tc[combturn[i][j]];
+					}
+	       		sorthand(tmphand);
+			 		result = resolve(tmphand);
+			 		if (result.value > besthand.value) { besthand = result; }
+				}
+		 	
+		 		break;
+
+	// RIVER
+	case 3 : 
+				for (i=0;i<10;i++)
+				{
+					for (j=0;j<3;j++)
+					{
+				 		tmphand[j+2] = tc[combriver[i][j]];
+					}
+	       		sorthand(tmphand);
+			 		result = resolve(tmphand);
+			 		if (result.value > besthand.value) { besthand = result; }
+				}
+		 	
+		 		break;
 
 	default: break;
  }
+ 
+ return besthand;
  
 }
 
@@ -199,6 +244,7 @@ struct handvalue  resolve (card * phand)
 
 	result.value = (handvalue[i]+totalvalue);
 	result.name = debug[i];
+	result.hand = i;
 	
 	return result;
 

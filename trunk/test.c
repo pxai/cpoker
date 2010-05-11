@@ -34,7 +34,7 @@ int main (void)
 
 
 	printf("A ver: %d",(0%13));
-
+/*
    // test Royal flush
    testhand[0] = POKERDECK[9];
    testhand[1] = POKERDECK[10];
@@ -199,8 +199,10 @@ int main (void)
    printresult(result);
    	
 	scanf("%c",&car);
+*/	
 	int total = 1000;			
-	while(--total>0)
+	//while(--total>0)
+	while(1)
 	{
 		
 		shuffle(NDECK);
@@ -211,15 +213,11 @@ int main (void)
 			testhand[c] = POKERDECK[NDECK[c]];
 		}
 		
-		//printf("Test HAND: ");
-		//	printhand(testhand);
 		sorthand(testhand);
-		//printf(" -> ");
-		//printhand(testhand);
-		//printf("\n");
 		result = resolve(testhand);
-		//printresult(result);
-		
+		printf("\nBest hand (%dpts): %s: ",result.value,result.name);
+		printhand(testhand);
+		/*		
 		if (result.value>bestresult.value)
 		{
 			bestresult.value = result.value;
@@ -227,8 +225,8 @@ int main (void)
 			for (j=0;j<5;j++)
 				besthand[j] = testhand[j];
 		}
-
-		//if (result.value>700) {scanf("%c",&car);}
+*/
+		if (result.hand==FOUR_OF_A_KIND) {scanf("%c",&car);}
 	}
 	
 	printf("Best hand (%dpts): %s\n",bestresult.value,bestresult.name);
