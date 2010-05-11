@@ -22,7 +22,7 @@ void deckinit (void);
 
 void calculatehand (struct player * p,card * tc, int phase);
 
-void resolve(card * phand);
+struct handvalue resolve(card * phand);
 
 void shorthand(card * phand);
 

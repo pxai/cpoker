@@ -28,7 +28,7 @@ void deckinit (void)
 	for (i=0;i<DECKSIZE;i++)	
 	{
 		t = (i/13) + 1;
-		value = (!(i%13))?13:i%13;
+		value = (!(i%13))?14:(i%13)+1;
 		POKERDECK[i].value = value;
 		POKERDECK[i].type = type[t];
 		POKERDECK[i].show = IMAGES[i];
@@ -50,7 +50,7 @@ void calculatehand (struct player * p, card * tc,int phase)
 		 tmphand[2] = tc[0];
 		 tmphand[3] = tc[1];
 		 tmphand[4] = tc[2];
-                 sorthand(tmphand);
+       sorthand(tmphand);
 		 resolve(tmphand);
 		 break;
 
@@ -59,18 +59,55 @@ void calculatehand (struct player * p, card * tc,int phase)
  
 }
 
-void resolve (card * phand)
+struct handvalue  resolve (card * phand)
 {
-	int i = 0, j = 0;
+	int i = 0, j = 0, tmp = 0;
+
+	struct handvalue result;
+	
 	card prev, current;
 	int pairs[2] = {0,0};
+	int three = -1;
 	int idx = 0;
 	// Checks for
-	char * debug[20] = {"Royal flush", "Straight Flush", "Four of a Kind", "Fullhouse", "Flush","Straight", "Three of a Kind", "Two Pairs", "Pairs", "Highest card"};
-	int checks[10] = {1,1,1,1,1,1,1,1,1,1};
+	char * debug[20] = {"Highest card","Pairs", "Two Pairs", "Three of a Kind", "Straight", "Flush","Fullhouse", "Four of a Kind", "Straight Flush", "Royal flush"};
+	int handvalue[10] = {0,100,200,300,400,500,600,700,800,1000};
+	int checks[10] = {1,1,1,1,1,1,0,1,1,0};
+	int what[10] = {0,0,0,0,1,1,0,0,0,0};
+	int totalvalue = 0;
+	
+	totalvalue = phand[0].value;
+
+
+	// Check for straight special cases: e.g. 2,3,4,K,A
+	// It's an ACE?
+	if (phand[4].value == 14 && phand[0].value == 2)
+	{
+		//printf("Possible Special CASE of straight");
+		for (i=1;i<4;i++)
+			if ((phand[i-1].value+1) != phand[i].value) {break;}
+		
+		for (j=i;j<4;j++)
+			if (phand[j].value+1 != phand[j+1].value) 
+				{//printf("out: [%d] %d %d\n",j,phand[j].value,phand[j+1].value);
+					what[4] = what[8] = what[9] = checks[4] = checks[8] = checks[9] = 0;
+					break;
+				}
+
+		// STRAIGHT DETECTED		
+		if (j==4)
+		{
+			//printf("Straight detected!!");
+			what[4] = 1;
+			checks[4] = checks[8] = checks[9] = 0;
+		}
+	}	
+	
 	
 	for (i=1;i<5;i++)
 	{
+		totalvalue += phand[i].value;
+		
 		prev = phand[i-1];
 		current = phand[i];
 		for (j=0;j<10;j++)
@@ -79,63 +116,92 @@ void resolve (card * phand)
 
 			switch (j)
 			{
-				case 0: // ROYAL FLUSH?
-					if (phand[0].value != 10)
-						checks[j] = 0;
+				case 0: // HIGHEST
+					what[j] = 1;
 					break;
-				case 1: // STRAIGHT FLUSH?
-					if (prev.value+1 != current.value || prev.type != current.type)
-						checks[j] = 0;
-					break;
-				case 2: // FOUR OF A KIND?
-					if (j==2 && !pairs[0] && prev.value != current.value)
-						checks[j] = 0;
-					break;
-				case 3: // FULLHOUSE
-					checks[j] = 0;
-					break;
-				case 4: // FLUSH
-					if (prev.type != current.type)
-						checks[j] = 0;
-					break;
-				case 5: // STRAIGHT
-					if (prev.value+1 != current.value)
-						checks[j] = 0;
-					break;
-				case 6: // THREE OF A KIND
-					if ( !(pairs[0] == prev.value && pairs[0] == current.value) ||  
-   					     !(pairs[1] == prev.value && pairs[0] == current.value)   )
-						checks[j] = 0;
-					break;
-				case 7: // TWO PAIRS
-					if (j>3 && (!pairs[0] || !pairs[1]))
-					{
-						checks[j] = 0;
-					}
-					break;
-				case 8: // PAIRS
+				case 1: // PAIRS [OK]
 					if (prev.value == current.value)
 					{
 						idx = (!pairs[0])?0:1;
 						pairs[idx] = prev.value;
-						checks[j] = 1;
+						what[j] = 1;
 					}
-					if (i==4 && !pairs[0] )
-						checks[j] = 0;
 					break;
-				case 9: // HIGHEST
-					checks[j] = 1;
+				case 2: // TWO PAIRS
+					if (pairs[0] && pairs[1] && i>2)
+					{
+						what[j] = 1;
+					}
+					break;
+				case 3: // THREE OF A KIND
+					if ( i<4 && (pairs[0] == current.value && pairs[0] == phand[i+1].value) ||  
+		     			(pairs[1] == current.value && pairs[1] == phand[i+1].value)   )
+		     		{
+						what[j] = 1;
+						three = current.value;
+					}
+					break;
+				case 4: // STRAIGHT 
+					if (prev.value+1 != current.value)
+						checks[j] = what[j]  = 0;
+					break;
+				case 5: // FLUSH
+					if (prev.type != current.type)
+						checks[j] = what[j]  = 0;
+					break;
+				case 7: // FOUR OF A KIND
+					if (i==2 && prev.type != current.type)
+						checks[j] = what[j]  = 0;
 					break;
 				default:
 					break;
 			} // end switch
+
 		} // end for
 	} // end for
-
-	for (i=0;i<10;i++)
-	{	
-		printf("check: %s = %d: %d\n",debug[i],i,checks[i]);
+	
+	// Check FULLHOUSE
+	if ((phand[0].value == phand[1].value && phand[3].value == phand[4].value) &&
+			(phand[1].value == phand[2].value || phand[2].value == phand[3].value) )
+	{
+		what[6] = 1;
 	}
+
+	// Check FOUR OF A KIND
+	if ((phand[1].value == phand[2].value && phand[2].value == phand[3].value) &&
+			(phand[0].value == phand[1].value || phand[3].value == phand[4].value) )
+	{
+		what[7] = 1;
+	}
+	
+	// STRAIGHT FLUSH
+	if (what[4] && what[5])
+	{
+		what[8] = 1;
+	}
+	
+	// ROYAL STRAIGHT FLUSH
+	if (what[8] && phand[0].value == 10)
+	{
+		what[9] = 1;
+	}
+	
+	for (i=9;i>=0;i--)
+	{	
+		if (what[i]) {break;}
+	}
+
+	// debug
+	//for (j=0;j<10;j++) {printf("\nWhat: %s = %d: %d",debug[j],j,what[j]);}
+	
+	
+	//printf("\n");
+
+	result.value = (handvalue[i]+totalvalue);
+	result.name = debug[i];
+	
+	return result;
+
 }
 
 /*
