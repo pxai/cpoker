@@ -3,7 +3,7 @@
 */
 #include "config.h"
 #include "card.h"
-#include <stdio.h>
+#include "utils.h"
 
 #ifndef HAND_H
 #define HAND_H

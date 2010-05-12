@@ -7,5 +7,5 @@
 
 void printresult(struct handvalue hv)
 {
-	printf("hand:%s %d pts\n",hv.name,hv.value);
+	msg("hand:%s %d pts\n",hv.name,hv.value);
 }

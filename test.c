@@ -8,8 +8,9 @@
 #include "players.h"
 #include "game.h"
 #include "hand.h"
+#include "utils.h"
 
-// gcc -o test deck.o dealer.o hand.o test.c
+// gcc -o test deck.o dealer.o hand.o utils.o test.c
 void printhand(card * h);
 
 int main (void)
@@ -27,13 +28,18 @@ int main (void)
 	money = TOTAL;
 	color = 1;
 	char car = ' ';
+	
+	msg("Welcome to the inferno\n");
+	setdbg(1);
+	dbg("Debugg me nen\n");
+	setdbg(0);
 
-	printf("Numero: %d\n",PLAYERS);
+	msg("Numero: %d\n",PLAYERS);
 	deckinit();
 	showall(POKERDECK,NDECK);
 
 
-	printf("A ver: %d",(0%13));
+	msg("A ver: %d",(0%13));
 /*
    // test Royal flush
    testhand[0] = POKERDECK[9];
@@ -41,7 +47,7 @@ int main (void)
    testhand[2] = POKERDECK[11];
    testhand[3] = POKERDECK[12];
    testhand[4] = POKERDECK[0];
-	printf("\nTest Royal flush: \n");
+	msg("\nTest Royal flush: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -55,7 +61,7 @@ int main (void)
    testhand[2] = POKERDECK[3];
    testhand[3] = POKERDECK[4];
    testhand[4] = POKERDECK[5];
-	printf("\nTest StraightFlush, Straight and flush: \n");
+	msg("\nTest StraightFlush, Straight and flush: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -69,7 +75,7 @@ int main (void)
    testhand[2] = POKERDECK[2];
    testhand[3] = POKERDECK[11];
    testhand[4] = POKERDECK[12];
-	printf("\nTest StraightFlush, Straight and flush 2 : \n");
+	msg("\nTest StraightFlush, Straight and flush 2 : \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -83,7 +89,7 @@ int main (void)
    testhand[2] = POKERDECK[1];
    testhand[3] = POKERDECK[15];
    testhand[4] = POKERDECK[29];
-	printf("\nTest StraightFlush, Straight and flush 3: \n");
+	msg("\nTest StraightFlush, Straight and flush 3: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -97,7 +103,7 @@ int main (void)
    testhand[2] = POKERDECK[6];
    testhand[3] = POKERDECK[8];
    testhand[4] = POKERDECK[10];
-	printf("\nTest Flush: \n");
+	msg("\nTest Flush: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -112,7 +118,7 @@ int main (void)
    testhand[2] = POKERDECK[38];
    testhand[3] = POKERDECK[51];
    testhand[4] = POKERDECK[4];
-	printf("\nTest Two Pairs: \n");
+	msg("\nTest Two Pairs: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -125,7 +131,7 @@ int main (void)
    testhand[3] = POKERDECK[38];
    testhand[4] = POKERDECK[51];
    testhand[0] = POKERDECK[4];
-	printf("\nTest Two Pairs: \n");
+	msg("\nTest Two Pairs: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -139,7 +145,7 @@ int main (void)
    testhand[2] = POKERDECK[26];
    testhand[3] = POKERDECK[51];
    testhand[4] = POKERDECK[4];
-	printf("\nTest Three of a Kind: \n");
+	msg("\nTest Three of a Kind: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -153,7 +159,7 @@ int main (void)
    testhand[2] = POKERDECK[2];
    testhand[3] = POKERDECK[15];
    testhand[4] = POKERDECK[28];
-	printf("\nTest Three of a Kind 2: \n");
+	msg("\nTest Three of a Kind 2: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -165,7 +171,7 @@ int main (void)
    testhand[2] = POKERDECK[26];
    testhand[3] = POKERDECK[27];
    testhand[0] = POKERDECK[14];
-	printf("\nTest FULLHOUSE: \n");
+	msg("\nTest FULLHOUSE: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -178,7 +184,7 @@ int main (void)
    testhand[3] = POKERDECK[26];
    testhand[4] = POKERDECK[39];
    testhand[0] = POKERDECK[4];
-	printf("\nTest Four of a Kind: \n");
+	msg("\nTest Four of a Kind: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -192,7 +198,7 @@ int main (void)
    testhand[3] = POKERDECK[27];
    testhand[4] = POKERDECK[40];
    testhand[0] = POKERDECK[1];
-	printf("\nTest Four of a Kind 2: \n");
+	msg("\nTest Four of a Kind 2: \n");
 	sorthand(testhand);
 	printhand(testhand);	
    result = resolve(testhand);
@@ -215,7 +221,7 @@ int main (void)
 		
 		sorthand(testhand);
 		result = resolve(testhand);
-		printf("\nBest hand (%dpts): %s: ",result.value,result.name);
+		msg("\nBest hand (%dpts): %s: ",result.value,result.name);
 		printhand(testhand);
 		/*		
 		if (result.value>bestresult.value)
@@ -229,7 +235,7 @@ int main (void)
 		if (result.hand==FOUR_OF_A_KIND) {scanf("%c",&car);}
 	}
 	
-	printf("Best hand (%dpts): %s\n",bestresult.value,bestresult.name);
+	msg("Best hand (%dpts): %s\n",bestresult.value,bestresult.name);
 	printhand(besthand);
 	return 1;
 }
@@ -241,6 +247,6 @@ void printhand (card * h)
 
 	for (c=0;c<5;c++)
 	{
-		printf(" %s",h[c].show);
+		msg(" %s",h[c].show);
 	}
 }

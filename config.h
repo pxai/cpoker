@@ -11,6 +11,8 @@
 #define HANDSIZE 2
 #define TOTALHAND 5
 
+#define PACKAGE "cpoker"
+#define LOCALEDIR "locales"
 
 #endif
 

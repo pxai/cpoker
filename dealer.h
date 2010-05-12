@@ -4,10 +4,11 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <stdio.h>
+
 #include <stdlib.h>
 #include "deck.h"
 #include "players.h"
+#include "utils.h"
 
 void shuffle (int * deck);
 

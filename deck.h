@@ -1,10 +1,11 @@
 /**
 * $Id$
 */
-#include <stdio.h>
+
 #include "config.h"
 #include "card.h"
 #include "players.h"
+#include "utils.h"
 
 #ifndef DECK_H
 #define DECK_H

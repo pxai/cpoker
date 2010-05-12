@@ -128,13 +128,13 @@ struct handvalue  resolve (card * phand)
 	// It's an ACE?
 	if (phand[4].value == 14 && phand[0].value == 2)
 	{
-		//printf("Possible Special CASE of straight");
+		//msg("Possible Special CASE of straight");
 		for (i=1;i<4;i++)
 			if ((phand[i-1].value+1) != phand[i].value) {break;}
 		
 		for (j=i;j<4;j++)
 			if (phand[j].value+1 != phand[j+1].value) 
-				{//printf("out: [%d] %d %d\n",j,phand[j].value,phand[j+1].value);
+				{//msg("out: [%d] %d %d\n",j,phand[j].value,phand[j+1].value);
 					what[4] = what[8] = what[9] = checks[4] = checks[8] = checks[9] = 0;
 					break;
 				}
@@ -142,7 +142,7 @@ struct handvalue  resolve (card * phand)
 		// STRAIGHT DETECTED		
 		if (j==4)
 		{
-			//printf("Straight detected!!");
+			//msg("Straight detected!!");
 			what[4] = 1;
 			checks[4] = checks[8] = checks[9] = 0;
 		}
@@ -237,10 +237,11 @@ struct handvalue  resolve (card * phand)
 	}
 
 	// debug
-	//for (j=0;j<10;j++) {printf("\nWhat: %s = %d: %d",debug[j],j,what[j]);}
+	if (isdbg())
+		for (j=0;j<10;j++) {dbg("What: %s = %d: %d\n",debug[j],j,what[j]);}
 	
 	
-	//printf("\n");
+	//msg("\n");
 
 	result.value = (handvalue[i]+totalvalue);
 	result.name = debug[i];
@@ -259,7 +260,7 @@ void sorthand (card * phand)
 	int i, j;
 	card tmp;
 
-//	for (i=0;i<5;i++) printf("%d %s\n",i,phand[i].show);
+//	for (i=0;i<5;i++) msg("%d %s\n",i,phand[i].show);
 
 	i = j = 0;
 
@@ -276,6 +277,6 @@ void sorthand (card * phand)
 		phand[j+1] = tmp;
 	}
 
-//	for (i=0;i<5;i++) printf("%d %s\n",i,phand[i].show);
+//	for (i=0;i<5;i++) msg("%d %s\n",i,phand[i].show);
 	
 }

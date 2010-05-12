@@ -4,12 +4,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <stdio.h>
 #include <stdlib.h>
 #include "deck.h"
 #include "players.h"
 #include "dealer.h"
 #include "ai.h"
+#include "utils.h"
 
 card * gamedeck;
 card tablecards[5];

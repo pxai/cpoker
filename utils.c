@@ -4,31 +4,69 @@
 #include "utils.h"
 
 
-void shuffle (int * deck)
+int CPKDEBUG = 1;
+char * CHARSET = "en-US";
+
+// SET debug level.
+void setdbg(int debuglevel)
 {
-	int i = 0;
-	int num = 0;
-	int tmp = 0;
-	srandom(time(0));
-	
-	for(i=0;i<DECKSIZE;i++)
-	{
-		num = random() % DECKSIZE;
-		
-		tmp = deck[i];
-		deck[i] = deck[num];
-		deck[num] = tmp;
-		
-	}
-	
+	CPKDEBUG = debuglevel;
 }
 
-void showall (char ** deck, int * ndeck)
+
+// SET charset
+void setchrset(char * chrset)
 {
-	int i = 0;
+	CHARSET = chrset;
 	
-	for(i=0;i<DECKSIZE;i++)
-	{
-		printf("%s,",deck[ndeck[i]]);
-	}
+	setlocale (LC_ALL, CHARSET);
+   bindtextdomain (PACKAGE, LOCALEDIR);
+   textdomain (PACKAGE);
+}
+
+
+// GET for debug level 
+int isdbg()
+{
+	return CPKDEBUG;
+}
+
+
+void msg(char* format, ...) {
+        va_list args;
+
+
+        va_start(args, format);
+        vfprintf(stdout,_(format),args);
+        va_end(args);
+
+}
+
+// prefix
+void msgp(char* format, ...) {
+		  char msg[256]; 
+        va_list args;
+
+        va_start(args, format);
+        snprintf(msg,256,"cPK> %s",_(format));
+        vfprintf(stdout,msg,args);
+        va_end(args);
+
+}
+
+
+void dbg(char* format, ...) {
+        va_list args;
+
+        if (!CPKDEBUG)
+                return;
+
+		  char msg[256]; 
+
+
+        va_start(args, format);
+        snprintf(msg,256,"dbg> %s",_(format));
+        vfprintf(stdout,msg,args);
+        va_end(args);
+
 }
