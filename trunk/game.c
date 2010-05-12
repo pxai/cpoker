@@ -11,14 +11,16 @@ void start ()
 	gameround = 0;
 	nplayers = PLAYERS;
 	pturn = -1;
-	
-	showall(POKERDECK,NDECK);
+
+	if (isdbg())	
+		showall(POKERDECK,NDECK);
 
 	do
 	{
 		// showing for debug
 		shuffle(NDECK);
-		showall(POKERDECK,NDECK);
+		if (isdbg())
+			showall(POKERDECK,NDECK);
 
 	
 		gamedeck = POKERDECK;
@@ -42,8 +44,8 @@ void pre_flop ()
 	int tmppot = 0;
 
 	unsigned short finish = 0;
-	printf("-------------[Round %d]-----------\n",gameround);
-	printf("PreFlop phase:\n");
+	msg("-------------[Round %d]-----------\n",gameround);
+	msg("PreFlop phase:\n");
 	char option[80];
 	char op;
 	
@@ -52,17 +54,17 @@ void pre_flop ()
 
 		if (gameplayers[current].human)
 		{
-
+			msg("[POT %d$]\n",pot);
 			showplayers(gameplayers, pturn);
-			printf("Please, select a choice:\n");
-			printf("(c)Call:%d$\t",max);
-			printf("(r)Raise:%d$\t",(max*2));
-			if (check_f) { printf("(k)Check.\t"); }
-			printf("(f)Fold.\t");
-			printf("(q)Chicken.\n");
+			msg("Please, select a choice:\n");
+			msg("(c)Call:%d$\t",max);
+			msg("(r)Raise:%d$\t",(max*2));
+			if (check_f) { msg("(k)Check.\t"); }
+			msg("(f)Fold.\t");
+			msg("(q)Chicken.\n");
 			scanf("%s",&option);
 				
-			printf("You entered: %s\n",option);
+			dbg("You entered: %s\n",option);
 			op = option[0];		
 		}
 		else // machine choice
@@ -102,14 +104,13 @@ void pre_flop ()
 					endgame = 1;
 					break;
 			default:
-					printf("\aWhat? repeat please.\n");
+					msg("\aWhat? repeat please.\n");
 					break;		
 		}	//switch
 	
 	
-			printf("[POT %d$]\n",pot);
+			dbg("[POT %d$]\n",pot);
 
-		scanf("%c",&option[0]);			
 		next();
 
 	} while (!finish && !checkbets());	
@@ -120,7 +121,8 @@ void pre_flop ()
 
 void flop ()
 {
-	printf("Flop phase:\n");
+
+	msg("Flop phase:\n");
 	showtablecards(3);
 	initbets();
 	int i = 0;
@@ -137,17 +139,18 @@ void flop ()
 		{
 
 			showtablecards(3);
+			msg("[POT %d$]\n",pot);
 			showplayers(gameplayers, pturn);
 			calculatehand(gameplayers,tablecards,1);
-			printf("Please, select a choice:\n");
-			printf("(c)Call:%d$\t",max);
-			printf("(r)Raise:%d$\t",(max*2));
-			if (check_f) { printf("(k)Check.\t"); }
-			printf("(f)Fold.\t");
-			printf("(q)Chicken.\n");
+			msg("Please, select a choice:\n");
+			msg("(c)Call:%d$\t",max);
+			msg("(r)Raise:%d$\t",(max*2));
+			if (check_f) { msg("(k)Check.\t"); }
+			msg("(f)Fold.\t");
+			msg("(q)Chicken.\n");
 			scanf("%s",&option);
 				
-			printf("You entered: %s\n",option);
+			dbg("You entered: %s\n",option);
 			op = option[0];		
 		}
 		else // machine choice
@@ -188,14 +191,14 @@ void flop ()
 					endgame = 1;
 					break;
 			default:
-					printf("\aWhat? repeat please.\n");
+					msg("\aWhat? repeat please.\n");
 					break;		
 		}	//switch
 	
 	
-			printf("[POT %d$]\n",pot);
+			dbg("[POT %d$]\n",pot);
 
-		scanf("%c",&option[0]);			
+		
 		next();
 
 	} while (!finish && !checkbets());	
@@ -206,7 +209,7 @@ void flop ()
 
 void turn ()
 {
-	printf("Turn phase:\n");
+	msg("Turn phase:\n");
 	initbets();
 	showtablecards(4);
 	unsigned short finish = 0;
@@ -220,16 +223,18 @@ void turn ()
 		{
 
 			showtablecards(4);
+			msg("[POT %d$]\n",pot);
 			showplayers(gameplayers, pturn);
-			printf("Please, select a choice:\n");
-			printf("(c)Call:%d$\t",max);
-			printf("(r)Raise:%d$\t",(max*2));
-			if (check_f) { printf("(k)Check.\t"); }
-			printf("(f)Fold.\t");
-			printf("(q)Chicken.\n");
+			calculatehand(gameplayers,tablecards,2);
+			msg("Please, select a choice:\n");
+			msg("(c)Call:%d$\t",max);
+			msg("(r)Raise:%d$\t",(max*2));
+			if (check_f) { msg("(k)Check.\t"); }
+			msg("(f)Fold.\t");
+			msg("(q)Chicken.\n");
 			scanf("%s",&option);
 				
-			printf("You entered: %s\n",option);
+			dbg("You entered: %s\n",option);
 			op = option[0];		
 		}
 		else // machine choice
@@ -270,14 +275,14 @@ void turn ()
 					endgame = 1;
 					break;
 			default:
-					printf("\aWhat? repeat please.\n");
+					msg("\aWhat? repeat please.\n");
 					break;		
 		}	//switch
 	
 	
-			printf("[POT %d$]\n",pot);
+			dbg("[POT %d$]\n",pot);
 
-		scanf("%c",&option[0]);			
+		
 		next();
 
 	} while (!finish && !checkbets());	
@@ -287,7 +292,7 @@ void turn ()
 
 void river ()
 {
-	printf("River phase:\n");
+	msg("River phase:\n");
 	initbets();
 	showtablecards(5);
 	unsigned short finish = 0;
@@ -301,16 +306,18 @@ void river ()
 		{
 
 			showtablecards(5);
+			msg("[POT %d$]\n",pot);
 			showplayers(gameplayers, pturn);
-			printf("Please, select a choice:\n");
-			printf("(c)Call:%d$\t",max);
-			printf("(r)Raise:%d$\t",(max*2));
-			if (check_f) { printf("(k)Check.\t"); }
-			printf("(f)Fold.\t");
-			printf("(q)Chicken.\n");
+			calculatehand(gameplayers,tablecards,3);
+			msg("Please, select a choice:\n");
+			msg("(c)Call:%d$\t",max);
+			msg("(r)Raise:%d$\t",(max*2));
+			if (check_f) { msg("(k)Check.\t"); }
+			msg("(f)Fold.\t");
+			msg("(q)Chicken.\n");
 			scanf("%s",&option);
 				
-			printf("You entered: %s\n",option);
+			dbg("You entered: %s\n",option);
 			op = option[0];		
 		}
 		else // machine choice
@@ -351,14 +358,14 @@ void river ()
 					endgame = 1;
 					break;
 			default:
-					printf("\aWhat? repeat please.\n");
+					msg("\aWhat? repeat please.\n");
 					break;		
 		}	//switch
 	
 	
-			printf("[POT %d$]\n",pot);
+			dbg("[POT %d$]\n",pot);
 
-		scanf("%c",&option[0]);			
+			
 		next();
 
 	} while (!finish && !checkbets());	
@@ -368,7 +375,7 @@ void river ()
 
 void showdown ()
 {
-	printf("Showdown phase\n");
+	msg("Showdown phase\n");
 	showtablecards(5);
 	showhands(gameplayers);
 	gameround++;
@@ -392,7 +399,7 @@ void initturn()
 	pturn++;
 	pturn = (pturn==nplayers)?0:pturn;
 	current = pturn;
-	printf("Current turn: %d\n",pturn);
+	msg("Current turn: %d\n",pturn);
 }
 
 // checkbets
@@ -406,14 +413,14 @@ int checkbets()
 	
 	for (i=0;i<nplayers;i++)
 	{
-		printf("checkbet>%d> %d\n",i,gameplayers[i].bet);
+		dbg("checkbet>%d> %d\n",i,gameplayers[i].bet);
 		if (gameplayers[i].bet > -1 && gameplayers[i].bet < max) 
 		{
-			printf("checkbet> NO!\n");
+			dbg("checkbet> NO!\n");
 			return 0;
 		}		
 	}
-			printf("checkbet> OK!\n");
+			dbg("checkbet> OK!\n");
 	
 	return 1;
 	
@@ -448,12 +455,12 @@ void showtablecards(int howmany)
 {
 	int i = 0;
 
-	printf("Visible Cards: ");
+	msg("Visible Cards: ");
 
 	for (i=0;i<howmany;i++)
 	{
-		printf("%s ",tablecards[i].show);
+		msg("%s ",tablecards[i].show);
 	}
-	printf("\n");
+	msg("\n");
 }
 
