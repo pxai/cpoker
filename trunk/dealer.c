@@ -45,18 +45,19 @@ void showplayers (struct player * players, int turn)
 	msg("\tPlayer %d Hand (you): %s %s %d %d$ - %s:(%d) %c\n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].money,players[i].handval.name,players[i].handval.value,(turn==i?'*':' '));
 	
 	for (i=1;i<PLAYERS;i++)
-		msg("\tPlayer %d Hand (you): %s %s %d %d$ - %s:(%d) %c\n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].money,players[i].handval.name,players[i].handval.value,(turn==i?'*':' '));
-//		msg("\tPlayer %d Hand: X X %d %d$ %c\n",i,players[i].choice,players[i].money,(i==turn?'*':' '));
+//		msg("\tPlayer %d Hand (you): %s %s %d %d$ - %s:(%d) %c\n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].money,players[i].handval.name,players[i].handval.value,(turn==i?'*':' '));
+		msg("\tPlayer %d Hand (com): X  X  %d %d$ %c\n",i,players[i].choice,players[i].money,(i==turn?'*':' '));
 }
 
 
 void showhands (struct player * players)
 {
 	int i = 0;
+	char * result[2] = {""," *WINNER* "};
 	msg("Showing player hands: \n");
 	
 	for (i=0;i<PLAYERS;i++)
-		msg("\t\tPlayer %d Hand: %s %s %d %d$ - %s:(%d) \n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].bet,players[i].handval.name,players[i].handval.value);
+		msg("\t\tPlayer %d Hand: %s %s %d %d$ - %s:(%d) : %s\n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].money,players[i].handval.name,players[i].handval.value,result[players[i].wins]);
 }
 
 void showall (card * deck, int * ndeck)

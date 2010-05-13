@@ -16,6 +16,7 @@ struct player * playerinit (void)
 		players[i].choice = NONE;
 		players[i].type = RANDOM;
 		players[i].money = TOTAL;
+		players[i].wins = 0;
 	}
 	
 	// Firs player will be human...

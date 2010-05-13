@@ -146,6 +146,7 @@ void flop ()
 				
 	do 
 	{
+		if (gameplayers[current].choice == FOLD) {next();continue;}
 
 		if (gameplayers[current].human)
 		{
@@ -240,6 +241,7 @@ void turn ()
 	
 	do 
 	{
+		if (gameplayers[current].choice == FOLD) {next();continue;}
 
 		if (gameplayers[current].human)
 		{
@@ -334,6 +336,7 @@ void river ()
 				
 	do 
 	{
+		if (gameplayers[current].choice == FOLD) {next();continue;}
 
 		if (gameplayers[current].human)
 		{
@@ -389,13 +392,16 @@ void river ()
 					gameplayers[current].choice = CHECK;
 					break;		
 		
-			case 'f':	gameplayers[current].bet = -2;
+			case 'f':	
+					gameplayers[current].bet = -2;
 					gameplayers[current].choice = FOLD;
 					showdown();
 					finish = 1;
 					break;		
 
-			case 'q':	finish = 1;
+			case 'q':
+					gameplayers[current].choice = NONE;	
+					finish = 1;
 					endgame = 1;
 					break;
 			default:
@@ -418,6 +424,7 @@ void showdown ()
 {
 	msg("Showdown phase\n");
 	showtablecards(5);
+	winners();
 	showhands(gameplayers);
 }
 
@@ -431,6 +438,7 @@ void initbets()
 	for (i=0;i<nplayers;i++)
 	{
 		gameplayers[i].bet = 0;		
+		gameplayers[i].wins = 0;		
 		gameplayers[i].handval.name = "";		
 		gameplayers[i].handval.value = 0;		
 		gameplayers[i].handval.hand = 0;		
@@ -507,3 +515,47 @@ void showtablecards(int howmany)
 	msg("\n");
 }
 
+
+// determine winners, deal money 
+void winners()
+{
+	int i = 0;
+	int best = 1;
+	int winners = 0;
+	int prize = 0;
+	int prev = -1;
+	max = 20;
+	check_f = 1;
+
+	for (i=0;i<nplayers;i++)
+	{
+		if (gameplayers[i].choice != FOLD && gameplayers[i].choice != NONE && best <= gameplayers[i].handval.value )
+		{
+			
+				
+			if (prev>-1 && best == gameplayers[i].handval.value)
+			{
+				winners++;
+			}
+			else
+			{
+				gameplayers[prev].wins = 0;
+				best = gameplayers[i].handval.value;
+				winners = 1;
+			}				
+				gameplayers[i].wins = 1;
+				prev = i;
+		}		
+	
+	}
+
+	// when there is more than one winner, divide the prize by winners
+	prize = (winners >1)?(pot/winners):pot;
+	for (i=0;i<nplayers;i++)
+	{
+		if (gameplayers[i].wins)
+		{
+			gameplayers[i].money +=prize;
+		}
+	}		
+}
