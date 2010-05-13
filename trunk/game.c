@@ -51,6 +51,7 @@ void pre_flop ()
 	
 	do 
 	{
+		if (gameplayers[current].choice == FOLD) {next();continue;}
 
 		if (gameplayers[current].human)
 		{
@@ -74,9 +75,17 @@ void pre_flop ()
 
 		switch (op)
 		{
+			case 'a': // all-in	
+					gameplayers[current].bet = max;
+					gameplayers[current].choice = ALLIN;
+					pot += gameplayers[current].money;
+					gameplayers[current].money = 0;
+					check_f = 0;
+					break;
 			case 'c':	
 					gameplayers[current].bet = max;
 					gameplayers[current].choice = CALL;
+					gameplayers[current].money -= max;
 					pot += max;
 					check_f = 0;
 					break;
@@ -84,8 +93,9 @@ void pre_flop ()
 			case 'r':
 					gameplayers[current].bet = max * 2;
 					gameplayers[current].choice = RAISE;
-					pot += (max * 2);
 					max *= 2;
+					gameplayers[current].money -= max;
+					pot += max;
 					check_f = 0;
 					break;		
 					
@@ -132,6 +142,8 @@ void flop ()
 	char option[80];
 	char op;
 	
+	calculatehand(gameplayers,nplayers,tablecards,1);
+				
 	do 
 	{
 
@@ -141,7 +153,6 @@ void flop ()
 			showtablecards(3);
 			msg("[POT %d$]\n",pot);
 			showplayers(gameplayers, pturn);
-			calculatehand(gameplayers,tablecards,1);
 			msg("Please, select a choice:\n");
 			msg("(c)Call:%d$\t",max);
 			msg("(r)Raise:%d$\t",(max*2));
@@ -161,9 +172,17 @@ void flop ()
 
 		switch (op)
 		{
+			case 'a': // all-in	
+					gameplayers[current].bet = max;
+					gameplayers[current].choice = ALLIN;
+					pot += gameplayers[current].money;
+					gameplayers[current].money = 0;
+					check_f = 0;
+					break;
 			case 'c':	
 					gameplayers[current].bet = max;
 					gameplayers[current].choice = CALL;
+					gameplayers[current].money -= max;
 					pot += max;
 					check_f = 0;
 					break;
@@ -171,8 +190,9 @@ void flop ()
 			case 'r':
 					gameplayers[current].bet = max * 2;
 					gameplayers[current].choice = RAISE;
-					pot += (max * 2);
 					max *= 2;
+					gameplayers[current].money -= max;
+					pot += max;
 					check_f = 0;
 					break;		
 					
@@ -216,6 +236,8 @@ void turn ()
 	char option[80];
 	char op;
 	
+	calculatehand(gameplayers,nplayers,tablecards,2);
+	
 	do 
 	{
 
@@ -225,7 +247,6 @@ void turn ()
 			showtablecards(4);
 			msg("[POT %d$]\n",pot);
 			showplayers(gameplayers, pturn);
-			calculatehand(gameplayers,tablecards,2);
 			msg("Please, select a choice:\n");
 			msg("(c)Call:%d$\t",max);
 			msg("(r)Raise:%d$\t",(max*2));
@@ -245,9 +266,18 @@ void turn ()
 
 		switch (op)
 		{
+		
+			case 'a': // all-in	
+					gameplayers[current].bet = max;
+					gameplayers[current].choice = ALLIN;
+					pot += gameplayers[current].money;
+					gameplayers[current].money = 0;
+					check_f = 0;
+					break;
 			case 'c':	
 					gameplayers[current].bet = max;
 					gameplayers[current].choice = CALL;
+					gameplayers[current].money -= max;
 					pot += max;
 					check_f = 0;
 					break;
@@ -255,8 +285,9 @@ void turn ()
 			case 'r':
 					gameplayers[current].bet = max * 2;
 					gameplayers[current].choice = RAISE;
-					pot += (max * 2);
 					max *= 2;
+					gameplayers[current].money -= max;
+					pot += max;
 					check_f = 0;
 					break;		
 					
@@ -299,6 +330,8 @@ void river ()
 	char option[80];
 	char op;
 	
+	calculatehand(gameplayers,nplayers,tablecards,3);
+				
 	do 
 	{
 
@@ -308,7 +341,6 @@ void river ()
 			showtablecards(5);
 			msg("[POT %d$]\n",pot);
 			showplayers(gameplayers, pturn);
-			calculatehand(gameplayers,tablecards,3);
 			msg("Please, select a choice:\n");
 			msg("(c)Call:%d$\t",max);
 			msg("(r)Raise:%d$\t",(max*2));
@@ -328,9 +360,17 @@ void river ()
 
 		switch (op)
 		{
+			case 'a': // all-in	
+					gameplayers[current].bet = max;
+					gameplayers[current].choice = ALLIN;
+					pot += gameplayers[current].money;
+					gameplayers[current].money = 0;
+					check_f = 0;
+					break;
 			case 'c':	
 					gameplayers[current].bet = max;
 					gameplayers[current].choice = CALL;
+					gameplayers[current].money -= max;
 					pot += max;
 					check_f = 0;
 					break;
@@ -338,8 +378,9 @@ void river ()
 			case 'r':
 					gameplayers[current].bet = max * 2;
 					gameplayers[current].choice = RAISE;
-					pot += (max * 2);
 					max *= 2;
+					gameplayers[current].money -= max;
+					pot += max;
 					check_f = 0;
 					break;		
 					
@@ -378,7 +419,6 @@ void showdown ()
 	msg("Showdown phase\n");
 	showtablecards(5);
 	showhands(gameplayers);
-	gameround++;
 }
 
 // initbets 
@@ -391,6 +431,9 @@ void initbets()
 	for (i=0;i<nplayers;i++)
 	{
 		gameplayers[i].bet = 0;		
+		gameplayers[i].handval.name = "";		
+		gameplayers[i].handval.value = 0;		
+		gameplayers[i].handval.hand = 0;		
 	}
 }
 // initbets 

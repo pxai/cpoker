@@ -42,65 +42,77 @@ void deckinit (void)
 /*
 * This is... the mother of the little lamb xD
 */
-struct handvalue  calculatehand (struct player * p, card * tc,int phase)
+void  calculatehand (struct player * p, int n, card * tc,int phase)
 {
- int i,j, k;
- i = j = k = 0;
+ int i,j, k, x;
+ i = j = k = x = 0;
  
   card tmphand[5]; 
  struct handvalue result,besthand;
   
- tmphand[0] = p->playerhand[0];
- tmphand[1] = p->playerhand[1];
- besthand.value = 0;		
-
- switch (phase)
+  
+ for (x=0;x<n;x++)
  {
+ 	tmphand[0] = p[x].playerhand[0];
+ 	tmphand[1] = p[x].playerhand[1];
+ 	besthand.value = 0;		
+	dbg("%d player hand------------------------------\n",x);
+ 	
+ 	switch (phase)
+ 	{
 		 		
- 	// FLOP 
-	case 1 : 
+ 		// FLOP 
+		case 1 : 
 		 		tmphand[2] = tc[0];
 		 		tmphand[3] = tc[1];
 		 		tmphand[4] = tc[2];
        		sorthand(tmphand);
 		 		result = resolve(tmphand);
-		 		if (result.value > besthand.value) { besthand = result; }
+		 		if (result.value > besthand.value) { besthand = result;  }
 		 		break;
 		 		
-	// TURN
-	case 2 : 
+		// TURN
+		case 2 : 
 				for (i=0;i<4;i++)
 				{
+				 	tmphand[0] = p[x].playerhand[0];
+ 					tmphand[1] = p[x].playerhand[1];
 					for (j=0;j<3;j++)
 					{
-				 		tmphand[j+2] = tc[combturn[i][j]];
+				 		tmphand[(j+2)] = tc[combturn[i][j]];
 					}
 	       		sorthand(tmphand);
 			 		result = resolve(tmphand);
 			 		if (result.value > besthand.value) { besthand = result; }
 				}
-		 	
 		 		break;
 
-	// RIVER
-	case 3 : 
+		// RIVER
+		case 3 : 
 				for (i=0;i<10;i++)
 				{
+				 	tmphand[0] = p[x].playerhand[0];
+ 					tmphand[1] = p[x].playerhand[1];
 					for (j=0;j<3;j++)
 					{
-				 		tmphand[j+2] = tc[combriver[i][j]];
+				 		tmphand[(j+2)] = tc[combriver[i][j]];
 					}
 	       		sorthand(tmphand);
 			 		result = resolve(tmphand);
 			 		if (result.value > besthand.value) { besthand = result; }
 				}
-		 	
+			 	
+
 		 		break;
 
-	default: break;
- }
+		default: break;
+ 	}
  
- return besthand;
+ 
+ 	p[x].handval = besthand;
+ 
+ } // for
+// return besthand;
  
 }
 
@@ -246,7 +258,7 @@ struct handvalue  resolve (card * phand)
 	result.value = (handvalue[i]+totalvalue);
 	result.name = debug[i];
 	result.hand = i;
-	
+
 	return result;
 
 }

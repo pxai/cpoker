@@ -241,12 +241,4 @@ int main (void)
 }
 
 
-void printhand (card * h)
-{
-	int c = 0;
 
-	for (c=0;c<5;c++)
-	{
-		msg(" %s",h[c].show);
-	}
-}
