@@ -16,6 +16,7 @@
 #define RAISE 2
 #define CHECK 3
 #define FOLD 4
+#define ALLIN 5
 
 typedef struct player {
 	// Player name
@@ -40,7 +41,7 @@ typedef struct player {
 	int bet;
 		
 	// hand posibilities
-	struct handvalue * handval;
+	struct handvalue handval;
 } player;
 
 struct player players[PLAYERS];

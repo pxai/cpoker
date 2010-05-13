@@ -42,10 +42,11 @@ void showplayers (struct player * players, int turn)
 	int i = 0;
 	msg("Showing players: \n");
 	
-	msg("\tPlayer %d Hand (you): %s %s %d %d$ %c\n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].bet,(turn==i?'*':' '));
+	msg("\tPlayer %d Hand (you): %s %s %d %d$ - %s:(%d) %c\n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].money,players[i].handval.name,players[i].handval.value,(turn==i?'*':' '));
 	
 	for (i=1;i<PLAYERS;i++)
-		msg("\tPlayer %d Hand: X X %d %d$ %c\n",i,players[i].choice,players[i].bet,(i==turn?'*':' '));
+		msg("\tPlayer %d Hand (you): %s %s %d %d$ - %s:(%d) %c\n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].money,players[i].handval.name,players[i].handval.value,(turn==i?'*':' '));
+//		msg("\tPlayer %d Hand: X X %d %d$ %c\n",i,players[i].choice,players[i].money,(i==turn?'*':' '));
 }
 
 
@@ -55,7 +56,7 @@ void showhands (struct player * players)
 	msg("Showing player hands: \n");
 	
 	for (i=0;i<PLAYERS;i++)
-		msg("\t\tPlayer %d Hand: %s %s %d %d$ \n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].bet);
+		msg("\t\tPlayer %d Hand: %s %s %d %d$ - %s:(%d) \n",i,players[i].playerhand[0].show,players[i].playerhand[1].show,players[i].choice,players[i].bet,players[i].handval.name,players[i].handval.value);
 }
 
 void showall (card * deck, int * ndeck)

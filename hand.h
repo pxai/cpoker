@@ -32,6 +32,7 @@ int combriver[10][3];
 
 void inithand(card * cards);
 void printresult(struct handvalue hv);
+void printhand (card * h);
 #endif
 
 	

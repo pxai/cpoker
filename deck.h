@@ -21,7 +21,7 @@ struct card POKERDECK[DECKSIZE];
 void deckinit (void);
 
 
-struct handvalue calculatehand (struct player * p,card * tc, int phase);
+void calculatehand (struct player * p,int n,card * tc, int phase);
 
 struct handvalue resolve(card * phand);
 
