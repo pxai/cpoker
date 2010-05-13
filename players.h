@@ -39,6 +39,9 @@ typedef struct player {
 
 	// bets
 	int bet;
+	
+	// winner?
+	int wins;
 		
 	// hand posibilities
 	struct handvalue handval;

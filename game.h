@@ -37,4 +37,5 @@ void putpot (int qty,int who);
 void next();
 void inittablecards();
 void showtablecards(int howmany);
+void winners();
 #endif
