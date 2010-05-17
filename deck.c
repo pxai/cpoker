@@ -250,8 +250,9 @@ struct handvalue  resolve (card * phand)
 
 	// debug
 	if (isdbg())
-		for (j=0;j<10;j++) {dbg("What: %s = %d: %d\n",debug[j],j,what[j]);}
-	
+			for (j=0;j<10;j++) {dbg("What: %s = %d: %d\n",debug[j],j,what[j]);}
+
+		
 	
 	//msg("\n");
 

@@ -3,6 +3,8 @@
 */
 #include "game.h"
 
+char choice[6][10] = {"","Call","Raise","Check","Fold","All-in"};
+	
 void start ()
 {
 
@@ -10,11 +12,14 @@ void start ()
 	endgame = 0;
 	gameround = 0;
 	nplayers = PLAYERS;
+
 	pturn = -1;
 
 	if (isdbg())	
 		showall(POKERDECK,NDECK);
 
+	gameplayers = playerinit();
+		
 	do
 	{
 		// showing for debug
@@ -25,7 +30,7 @@ void start ()
 	
 		gamedeck = POKERDECK;
 		gamendeck = NDECK;
-		gameplayers = playerinit();
+
 		deal(gamedeck,gamendeck,gameplayers);
 		inittablecards();	
 		pot = 0;
@@ -33,11 +38,13 @@ void start ()
 		gameround++;
 		playerinitchoice(gameplayers);
 		pre_flop();
+		
 	} while(!endgame);
 }
 
 void pre_flop ()
 {
+	msg("--- PreFlop phase ----------------------------------\n");
 	initbets();
 	initturn();	
 	int i = 0;
@@ -118,6 +125,7 @@ void pre_flop ()
 					break;		
 		}	//switch
 	
+			msg("Player %d> %s %d\n",current,choice[gameplayers[current].choice], gameplayers[current].bet);
 	
 			dbg("[POT %d$]\n",pot);
 
@@ -132,7 +140,7 @@ void pre_flop ()
 void flop ()
 {
 
-	msg("Flop phase:\n");
+	msg("--- Flop phase ----------------------------------\n");
 	showtablecards(3);
 	initbets();
 	int i = 0;
@@ -143,6 +151,8 @@ void flop ()
 	char op;
 	
 	calculatehand(gameplayers,nplayers,tablecards,1);
+	//dealerhand = resolve(tablecards);
+	
 				
 	do 
 	{
@@ -217,6 +227,7 @@ void flop ()
 		}	//switch
 	
 	
+			msg("Player %d> %s %d\n",current,choice[gameplayers[current].choice], gameplayers[current].bet);
 			dbg("[POT %d$]\n",pot);
 
 		
@@ -230,7 +241,7 @@ void flop ()
 
 void turn ()
 {
-	msg("Turn phase:\n");
+	msg("--- Turn phase ----------------------------------\n");
 	initbets();
 	showtablecards(4);
 	unsigned short finish = 0;
@@ -313,6 +324,7 @@ void turn ()
 		}	//switch
 	
 	
+			msg("Player %d> %s %d\n",current,choice[gameplayers[current].choice], gameplayers[current].bet);
 			dbg("[POT %d$]\n",pot);
 
 		
@@ -325,7 +337,7 @@ void turn ()
 
 void river ()
 {
-	msg("River phase:\n");
+	msg("--- River phase ----------------------------------\n");
 	initbets();
 	showtablecards(5);
 	unsigned short finish = 0;
@@ -410,6 +422,7 @@ void river ()
 		}	//switch
 	
 	
+			msg("Player %d> %s %d\n",current,choice[gameplayers[current].choice], gameplayers[current].bet);
 			dbg("[POT %d$]\n",pot);
 
 			
@@ -422,10 +435,15 @@ void river ()
 
 void showdown ()
 {
-	msg("Showdown phase\n");
+	char option;
+	msg("--- Showdown phase ----------------------------------\n");
 	showtablecards(5);
 	winners();
 	showhands(gameplayers);
+	msg("\n\n\t Press any key to continue ...\n");
+	scanf("%s",&option);
+
+
 }
 
 // initbets 
@@ -558,4 +576,22 @@ void winners()
 			gameplayers[i].money +=prize;
 		}
 	}		
+}
+
+
+// Prevents considering winner hand the cards from table.
+int istablecard(struct handvalue dealerhand, struct handvalue playerhand)
+{
+	int i = 0;
+	if (playerhand.value != PAIR && playerhand.value != THREE_OF_A_KIND  )
+		return 0;
+		
+	for (i=0;i<3;i)
+	{
+		if (dealerhand.cards[i].show != playerhand.cards[i].show)
+			return 0;
+	}
+	
+	// is the same!!
+	return 1;
 }
