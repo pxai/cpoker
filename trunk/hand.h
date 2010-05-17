@@ -25,6 +25,7 @@ typedef struct handvalue {
 	char * name;
 	int value;	
 	int hand;
+	card * cards;	
 } handvalue;
 
 int combturn[4][3];

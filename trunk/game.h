@@ -13,8 +13,10 @@
 
 card * gamedeck;
 card tablecards[5];
+char choice[6][10];
 int * gamendeck;
 player * gameplayers;
+struct handvalue dealerhand;
 int pturn;
 int nplayers;
 int current;
@@ -38,4 +40,5 @@ void next();
 void inittablecards();
 void showtablecards(int howmany);
 void winners();
+int istablecard(struct handvalue dealerhand, struct handvalue playerhand);
 #endif
