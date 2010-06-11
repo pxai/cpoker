@@ -8,7 +8,7 @@ char choice[6][10] = {"","Call","Raise","Check","Fold","All-in"};
 void start ()
 {
 
-	deckinit();
+	deckinit(0);
 	endgame = 0;
 	gameround = 0;
 	nplayers = PLAYERS;
