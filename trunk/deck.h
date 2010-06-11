@@ -18,7 +18,7 @@ int DECKINDEX;
 
 struct card POKERDECK[DECKSIZE];
 
-void deckinit (void);
+void deckinit (int dtype);
 
 
 void calculatehand (struct player * p,int n,card * tc, int phase);
